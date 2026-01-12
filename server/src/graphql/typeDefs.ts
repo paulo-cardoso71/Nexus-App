@@ -39,11 +39,11 @@ export const typeDefs = `#graphql
   }
 
   type Mutation {
-    # Adicionamos esta linha para bater com o seu Resolver!
     createPost(body: String!): Post!
+    deletePost(postId: ID!): String!
     
-    # Vamos deixar o register comentado por enquanto para não dar erro, 
-    # pois ainda não criamos a lógica (resolver) dele.
-    # register(username: String!, email: String!, password: String!, confirmPassword: String!): User!
+    # Agora sim, dentro da string!
+    register(username: String!, email: String!, password: String!, confirmPassword: String!): User!
+    login(username: String!, password: String!): User!
   }
-`;
+`; // <--- A CRASE DEVE FICAR AQUI NO FINAL

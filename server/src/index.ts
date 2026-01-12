@@ -35,6 +35,7 @@ async function startServer() {
 
     const { url } = await startStandaloneServer(server, {
       listen: { port: 4000 },
+      context: async ({ req }) => ({ req }),
     });
 
     console.log(`🚀 Server ready at: ${url}`);
