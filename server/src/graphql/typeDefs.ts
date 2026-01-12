@@ -41,8 +41,11 @@ export const typeDefs = `#graphql
   type Mutation {
     createPost(body: String!): Post!
     deletePost(postId: ID!): String!
+    likePost(postId: ID!): Post!
+
+    createComment(postId: ID!, body: String!): Post!
+    deleteComment(postId: ID!, commentId: ID!): Post!
     
-    # Agora sim, dentro da string!
     register(username: String!, email: String!, password: String!, confirmPassword: String!): User!
     login(username: String!, password: String!): User!
   }
