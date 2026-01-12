@@ -73,6 +73,86 @@ export const postsResolvers = {
       } catch (err) {
         throw new Error(err as string);
       }
+    },
+
+    async likePost(_: any, { postId }: { postId: string }, context: any) {
+      const user = checkAuth(context) as { username: string };
+
+      const post = await Post.findById(postId);
+      
+      if (post) {
+        // Check if the user has already liked this post
+        if (post.likes.find((like) => like.username === user.username)) {
+          
+          // Post already liked, UNLIKE it
+          post.likes = post.likes.filter((like) => like.username !== user.username);
+          
+        } else {
+          
+          // Not liked, LIKE it
+          post.likes.push({
+            username: user.username,
+            createdAt: new Date().toISOString()
+          });
+          
+        }
+
+        await post.save();
+        return post;
+      } else {
+        throw new Error('Post not found');
+      }
+    },
+    async createComment(_: any, { postId, body }: { postId: string, body: string }, context: any) {
+      const user = checkAuth(context) as { username: string };
+
+      if (body.trim() === '') {
+        throw new Error('Empty comment'); // Validação simples
+      }
+
+      const post = await Post.findById(postId);
+
+      if (post) {
+        // Adiciona o comentário no INÍCIO da lista (unshift)
+        post.comments.unshift({
+          body,
+          username: user.username,
+          createdAt: new Date().toISOString()
+        });
+        
+        await post.save();
+        return post;
+      } else {
+        throw new Error('Post not found');
+      }
+    },
+
+    async deleteComment(_: any, { postId, commentId }: { postId: string, commentId: string }, context: any) {
+      const user = checkAuth(context) as { username: string };
+
+      const post = await Post.findById(postId);
+
+      if (post) {
+        // Encontra o índice do comentário
+        const commentIndex = post.comments.findIndex((c: any) => c.id === commentId);
+
+        // Se o comentário existe...
+        if (commentIndex > -1) { // (Sim, a verificação no JS puro seria verificando o ID)
+            
+          // Regra de Ouro: Só quem criou o comentário pode apagar
+          if (post.comments[commentIndex].username === user.username) {
+            post.comments.splice(commentIndex, 1); // Remove 1 item no índice encontrado
+            await post.save();
+            return post;
+          } else {
+            throw new Error('Action not allowed');
+          }
+        } else {
+            throw new Error('Comment not found');
+        }
+      } else {
+        throw new Error('Post not found');
+      }
     }
   }
 };
