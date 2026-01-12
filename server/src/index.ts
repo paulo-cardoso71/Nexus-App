@@ -2,41 +2,57 @@
 
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import mongoose from 'mongoose';
+import * as dotenv from 'dotenv';
 
-// 1. TypeDefs: Define the "Shape" of your data.
-// This is like the Interface in C#.
-// Use the `#graphql` tag so VS Code highlights the syntax correctly.
+// 1. Load environment variables from .env file
+dotenv.config();
+
+// 2. TypeDefs (The Menu)
 const typeDefs = `#graphql
-  # Think of "Query" as your GET endpoints in REST.
   type Query {
-    # Returns a simple string to test connectivity
     hello: String
   }
 `;
 
-// 2. Resolvers: The logic behind the types.
-// This tells the server HOW to fetch the data defined above.
+// 3. Resolvers (The Chefs)
 const resolvers = {
   Query: {
-    // When someone asks for 'hello', this function runs.
-    hello: () => 'Hello World! Connectivity is working.',
+    hello: () => 'Hello World! Database is connected.',
   },
 };
 
-// 3. Server Initialization
-// We pass the definition (typeDefs) and the logic (resolvers) to Apollo.
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
-
-// Function to start the server properly
+// 4. Database Connection & Server Startup
 async function startServer() {
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
-  });
+  try {
+    // Check if the connection string exists
+    const MONGODB_URI = process.env.MONGODB_URI;
+    if (!MONGODB_URI) {
+      throw new Error('⚠️ MONGODB_URI is missing in .env file');
+    }
 
-  console.log(`🚀 Server ready at: ${url}`);
+    // Connect to MongoDB
+    // strictQuery: true is a recommendation for Mongoose v7+
+    mongoose.set('strictQuery', true);
+    await mongoose.connect(MONGODB_URI);
+    console.log('🍃 MongoDB connected successfully!');
+
+    // Initialize Apollo Server
+    const server = new ApolloServer({
+      typeDefs,
+      resolvers,
+    });
+
+    // Start the server
+    const { url } = await startStandaloneServer(server, {
+      listen: { port: 4000 },
+    });
+
+    console.log(`🚀 Server ready at: ${url}`);
+
+  } catch (error) {
+    console.error('❌ Error starting server:', error);
+  }
 }
 
 startServer();
