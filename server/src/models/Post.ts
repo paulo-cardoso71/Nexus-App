@@ -5,18 +5,18 @@ import { Schema, model, Types } from 'mongoose';
 // 1. Interfaces (TypeScript)
 // We define strict types for Comments and Likes to ensure code safety.
 
-interface IComment {
+export interface IComment {
   body: string;
   username: string;
   createdAt: string;
 }
 
-interface ILike {
+export interface ILike {
   username: string;
   createdAt: string;
 }
 
-interface IPost {
+export interface IPost {
   body: string;
   username: string;
   createdAt: string;

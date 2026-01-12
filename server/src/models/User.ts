@@ -4,7 +4,7 @@ import { Schema, model } from 'mongoose';
 
 // 1. Define the User Interface (TypeScript)
 // This ensures our code knows exactly what a "User" looks like.
-interface IUser {
+export interface IUser {
   username: string;
   email: string;
   password?: string; // Optional because we might hash it later
