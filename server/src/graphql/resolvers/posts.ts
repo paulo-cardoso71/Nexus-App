@@ -1,20 +1,18 @@
 // server/src/graphql/resolvers/posts.ts
 
 import { Post } from '../../models/index.js';
+import { checkAuth } from '../../util/check-auth.js'; // <--- IMPORTE ISSO
 
 export const postsResolvers = {
   Query: {
-    // Lógica para buscar TODOS os posts
     async getPosts() {
       try {
-        // .find() é do Mongoose. Busca tudo e ordena por data (mais novo primeiro)
         const posts = await Post.find().sort({ createdAt: -1 });
         return posts;
       } catch (err) {
         throw new Error(err as string);
       }
     },
-    // Lógica para buscar UM post
     async getPost(_: any, { postId }: { postId: string }) {
       try {
         const post = await Post.findById(postId);
@@ -30,19 +28,51 @@ export const postsResolvers = {
   },
   
   Mutation: {
-    // Lógica para CRIAR um post (Vamos testar isso jajá!)
-    async createPost(_: any, { body }: { body: string }) {
-      // NOTE: Authentication check will come later (User context)
-      // For now, let's hardcode a username just to test the database
+    // Adicionamos o argumento 'context' aqui (terceiro parametro)
+    async createPost(_: any, { body }: { body: string }, context: any) {
       
+      // 1. VERIFICAR QUEM É O USUÁRIO (SEGURANÇA)
+      const user = checkAuth(context) as { id: string; username: string; email: string };
+      // Se o token for inválido, o código para aqui e dá erro.
+      
+      console.log("Usuário logado:", user); // Só para debug
+
+      // 2. CRIAR O POST COM O USUÁRIO REAL
+      // O 'user' retornado pelo checkAuth tem os dados que colocamos no token (username, id, etc)
       const newPost = new Post({
         body,
-        username: 'PauloTeste', // Hardcoded for now
+        user: user.id,      // Referência ao ID do banco
+        username: user.username, // Nome real do usuário logado
         createdAt: new Date().toISOString()
       });
 
-      const post = await newPost.save(); // Salva no MongoDB
+      const post = await newPost.save();
       return post;
+    },
+
+    async deletePost(_: any, { postId }: { postId: string }, context: any) {
+      // 1. Pega quem está logado (O Token)
+      const user = checkAuth(context) as { username: string };
+
+      try {
+        // 2. Busca o post no banco
+        const post = await Post.findById(postId);
+        
+        if (!post) {
+           throw new Error('Post not found');
+        }
+
+        // 3. A REGRA DE OURO: O dono do post é o mesmo do token?
+        if (user.username === post.username) {
+          await post.deleteOne(); // Apaga do banco
+          return 'Post deleted successfully';
+        } else {
+          // Se não for o dono...
+          throw new Error('Action not allowed'); 
+        }
+      } catch (err) {
+        throw new Error(err as string);
+      }
     }
   }
 };
