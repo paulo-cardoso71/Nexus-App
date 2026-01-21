@@ -1,22 +1,36 @@
+// client/src/main.tsx
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// 1. Importe as ferramentas puras do pacote principal
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 
-// 2. Importe o componente React de dentro da pasta específica 'react'
-import { ApolloProvider } from '@apollo/client/react';
-
-// 1. Crie o link HTTP separadamente (Isso acalma o TypeScript sobre a 'uri')
+// 1. O Link HTTP (Onde está o servidor)
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
 })
 
-// 2. Configure o cliente usando 'link' em vez de passar 'uri' direto
+// 2. O Link de Autenticação (O Interceptador)
+// Ele roda antes de cada pedido, pega o token e coloca no Header
+const authLink = setContext((_, { headers }) => {
+  // Pega o token do armazenamento local
+  const token = localStorage.getItem('jwtToken');
+  
+  // Retorna os headers antigos + o novo header de autorização
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
+
+// 3. O Cliente Final (Junta os dois links)
 const client = new ApolloClient({
-  link: httpLink, 
+  link: authLink.concat(httpLink), // <-- A Mágica acontece aqui: Auth + Http
   cache: new InMemoryCache()
 })
 
