@@ -1,102 +1,66 @@
 // client/src/App.tsx
 
-// 1. Standard import (The only correct way in modern Apollo)
-import { useQuery, gql } from '@apollo/client';
+import React, { useContext } from 'react'; // Added useContext
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { AuthProvider, AuthContext } from './context/auth'; // Import Context
 
-// 2. Interface Definition (Solves 'implicit any' issues)
-interface Post {
-  id: string;
-  body: string;
-  username: string;
-  createdAt: string;
-  likeCount: number;
-  commentCount: number;
-  likes: {
-    username: string;
-  }[];
-  comments: {
-    id: string;
-    username: string;
-    body: string;
-    createdAt: string;
-  }[];
-}
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
-// Interface for the Query Result
-interface GetPostsData {
-  getPosts: Post[];
-}
+// Componente Navbar separado para poder usar o Contexto
+function Navbar() {
+  // Access the user and logout function from Context
+  const { user, logout } = useContext(AuthContext);
 
-const GET_POSTS = gql`
-  query GetPosts {
-    getPosts {
-      id
-      body
-      username
-      createdAt
-      likeCount
-      commentCount
-    }
+  const onLogout = () => {
+    logout();
+    // Optional: Redirect to login or home after logout
+    window.location.href = '/login'; 
   }
-`;
 
-function App() {
-  // 3. Typed Query Hook
-  const { loading, error, data } = useQuery<GetPostsData>(GET_POSTS);
-
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-xl text-blue-600 animate-pulse">Loading posts...</p>
+  const navBar = user ? (
+    // IF LOGGED IN: Show Logout and Username
+    <div className="flex items-center gap-4">
+      <span className="text-blue-200 font-medium">Hello, {user.username}</span>
+      <Link to="/" className="hover:text-white transition-colors">Home</Link>
+      <button onClick={onLogout} className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition-colors">
+        Logout
+      </button>
     </div>
-  );
-
-  if (error) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-        <p className="font-bold">Connection Error:</p>
-        <p>{error.message}</p>
-      </div>
+  ) : (
+    // IF LOGGED OUT: Show Login and Register
+    <div className="space-x-4">
+      <Link to="/login" className="hover:text-blue-200 transition-colors">Login</Link>
+      <Link to="/register" className="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100 transition-colors">Register</Link>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-blue-600 mb-8">
-          Social Media Feed 🚀
-        </h1>
-
-        <div className="space-y-4">
-          {/* 4. EXPLICIT TYPING HERE 👇 
-            We explicitly tell TS that 'post' is of type 'Post'.
-            This kills the "Parameter implicitly has an 'any' type" error.
-          */}
-          {data?.getPosts.map((post: Post) => (
-            <div key={post.id} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <div className="flex justify-between items-center mb-3">
-                <span className="font-bold text-gray-800 text-lg">@{post.username}</span>
-                <span className="text-sm text-gray-400">
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-              
-              <p className="text-gray-600 text-lg mb-4 leading-relaxed border-l-4 border-blue-500 pl-4">
-                {post.body}
-              </p>
-              
-              <div className="flex gap-6 text-gray-500 font-medium border-t pt-4">
-                <span className="flex items-center gap-1 cursor-pointer hover:text-red-500">
-                  ❤️ {post.likeCount} Likes
-                </span>
-                <span className="flex items-center gap-1 cursor-pointer hover:text-blue-500">
-                  💬 {post.commentCount} Comments
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+    <nav className="bg-blue-600 p-4 text-white shadow-md sticky top-0 z-50">
+      <div className="max-w-2xl mx-auto flex justify-between items-center">
+        <Link to="/" className="font-bold text-xl hover:text-blue-200">SocialGraph</Link>
+        {navBar}
       </div>
-    </div>
+    </nav>
+  );
+}
+
+function App() {
+  return (
+    // Wrap everything in AuthProvider
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <div className="bg-gray-100 min-h-screen">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
