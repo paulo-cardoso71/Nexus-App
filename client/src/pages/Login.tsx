@@ -3,6 +3,7 @@
 import React, { useContext, useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../components/Logo';
 
 import { AuthContext } from '../context/auth';
 
@@ -57,6 +58,9 @@ function Login() {
   return (
     <div className="flex items-center justify-center min-h-[80vh]">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+        <div className="flex justify-center mb-6">
+    <Logo className="h-16" />
+  </div>
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Login
         </h1>
