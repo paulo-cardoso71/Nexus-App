@@ -2,9 +2,12 @@
 
 import React, { useContext } from 'react';
 import { useQuery, gql } from '@apollo/client';
+import DeleteButton from '../components/DeleteButton';
+import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../context/auth';
 import PostForm from '../components/PostForm';
+import LikeButton from '../components/LikeButton';
 
 // 1. Interface for Post Data
 interface Post {
@@ -85,6 +88,9 @@ function Home() {
                     <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg">
                       {post.username[0].toUpperCase()}
                     </div>
+                    {user && user.username === post.username && (
+     <DeleteButton postId={post.id} />
+   )}
                     <div>
                       <p className="font-bold text-gray-800">@{post.username}</p>
                       <p className="text-xs text-gray-400">
@@ -100,10 +106,15 @@ function Home() {
 
                <div className="flex gap-6 text-gray-500 font-medium border-t pt-4">
                   <button className="flex items-center gap-1 hover:text-red-500 transition-colors">
-                    ❤️ {post.likeCount} Likes
+                    <LikeButton user={user} post={post} />
                   </button>
                   <button className="flex items-center gap-1 hover:text-blue-500 transition-colors">
-                    💬 {post.commentCount} Comments
+                    <Link 
+  to={`/posts/${post.id}`} 
+  className="flex items-center gap-1 hover:text-blue-500 transition-colors"
+>
+  💬 {post.commentCount} Comments
+</Link>
                   </button>
                </div>
             </div>

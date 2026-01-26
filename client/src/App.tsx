@@ -4,6 +4,7 @@ import React, { useContext } from 'react'; // Added useContext
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/auth'; // Import Context
 
+import SinglePost from './pages/SinglePost';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -57,6 +58,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/posts/:postId" element={<SinglePost />}/>
           </Routes>
         </div>
       </BrowserRouter>
