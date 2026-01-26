@@ -77,33 +77,42 @@ function PostForm() {
     createPost();
   };
 
-  return (
-    <div className="bg-white p-4 rounded-lg shadow mb-6">
-      <h2 className="text-xl font-bold mb-4 text-gray-700">Create a Post</h2>
+ return (
+    // CARD: Branco no Light, Slate-800 no Dark (Zero Branco puro no escuro)
+    <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-8 transition-colors duration-300">
+      
+      <h2 className="text-lg font-bold mb-4 text-slate-700 dark:text-slate-200 flex items-center gap-2">
+        <span className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xl">✨</span>
+        Criar novo post
+      </h2>
+      
       <form onSubmit={onSubmit}>
-        <div className="mb-4">
+        <div className="mb-4 relative">
+          {/* INPUT: Fundo Slate-50 no Light, Slate-900 no Dark (Contraste profundo) */}
           <input
             type="text"
-            placeholder="What's on your mind?"
+            placeholder="O que você está pensando hoje?"
             name="body"
             onChange={onChange}
             value={values.body}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:text-slate-100 placeholder-slate-400 transition-all duration-200"
           />
         </div>
         
-        <button
-          type="submit"
-          disabled={values.body.trim() === ''}
-          className="bg-blue-600 text-white font-bold py-2 px-6 rounded hover:bg-blue-700 transition disabled:opacity-50"
-        >
-          Post
-        </button>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            disabled={values.body.trim() === ''}
+            className="bg-blue-700 text-white font-bold py-2 px-8 rounded-lg shadow-md hover:bg-blue-800 hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 dark:shadow-none"
+          >
+            Publicar
+          </button>
+        </div>
       </form>
       
       {error && (
-        <div className="mt-3 text-red-600 text-sm bg-red-100 p-2 rounded">
-          {error.graphQLErrors[0]?.message}
+        <div className="mt-4 text-red-500 dark:text-red-300 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-100 dark:border-red-900/30 flex items-center gap-2">
+          ⚠️ {error.graphQLErrors[0]?.message}
         </div>
       )}
     </div>
