@@ -55,7 +55,7 @@ function MenuBar() {
                   onClick={logout}
                   className="text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 px-3 py-1 rounded transition-colors"
                 >
-                  Sair
+                  Logout
                 </button>
               </>
             ) : (

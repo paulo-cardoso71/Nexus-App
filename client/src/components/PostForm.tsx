@@ -83,7 +83,7 @@ function PostForm() {
       
       <h2 className="text-lg font-bold mb-4 text-slate-700 dark:text-slate-200 flex items-center gap-2">
         <span className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xl">✨</span>
-        Criar novo post
+        Create a new post
       </h2>
       
       <form onSubmit={onSubmit}>
@@ -91,7 +91,7 @@ function PostForm() {
           {/* INPUT: Fundo Slate-50 no Light, Slate-900 no Dark (Contraste profundo) */}
           <input
             type="text"
-            placeholder="O que você está pensando hoje?"
+            placeholder="What are you thinking today?"
             name="body"
             onChange={onChange}
             value={values.body}
@@ -105,7 +105,7 @@ function PostForm() {
             disabled={values.body.trim() === ''}
             className="bg-blue-700 text-white font-bold py-2 px-8 rounded-lg shadow-md hover:bg-blue-800 hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 dark:shadow-none"
           >
-            Publicar
+            Post
           </button>
         </div>
       </form>
