@@ -138,7 +138,7 @@ function SinglePost() {
       {/* Container: Branco no claro, Slate-800 no escuro */}
       <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors duration-300">
         <h3 className="text-lg font-bold text-slate-700 dark:text-slate-200 mb-6 flex items-center gap-2">
-          Discussão
+          Discussion
           <span className="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs py-1 px-2 rounded-full font-bold">
             {commentCount}
           </span>
@@ -152,7 +152,7 @@ function SinglePost() {
             <div className="w-full relative">
               <input
                 type="text"
-                placeholder="Escreva um comentário..."
+                placeholder="Write a comment...."
                 // INPUT DARK: Fundo Slate-900 para contraste com o card Slate-800
                 className="w-full p-3 pr-20 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:text-white transition-all shadow-inner"
                 value={comment}
@@ -165,7 +165,7 @@ function SinglePost() {
                 disabled={comment.trim() === ''}
                 onClick={() => submitComment()}
               >
-                Enviar
+                Post
               </button>
             </div>
           </div>
@@ -208,8 +208,8 @@ function SinglePost() {
           
           {comments.length === 0 && (
             <div className="text-center py-10 text-slate-400 dark:text-slate-500 border-2 border-dashed border-slate-100 dark:border-slate-700 rounded-xl">
-              <p>Nenhum comentário ainda.</p>
-              <p className="text-sm">Seja o primeiro a falar!</p>
+              <p>No comments yet.</p>
+              <p className="text-sm">Be the first to comment!</p>
             </div>
           )}
         </div>
