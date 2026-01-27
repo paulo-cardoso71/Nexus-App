@@ -10,7 +10,7 @@ import { setContext } from '@apollo/client/link/context'
 
 // 1. O Link HTTP (Onde está o servidor)
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+uri: import.meta.env.VITE_API_URL || 'http://localhost:4000/graphql',
 })
 
 // 2. O Link de Autenticação (O Interceptador)
