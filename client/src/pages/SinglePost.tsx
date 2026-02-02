@@ -188,7 +188,7 @@ function SinglePost() {
                   <div className="flex justify-between items-start">
                     <div className="flex items-baseline gap-2">
                       <span className="font-bold text-slate-800 dark:text-slate-200 text-sm">@{comment.username}</span>
-                      <span className="text-xs text-slate-400 dark:text-slate-500">{new Date(comment.createdAt).toLocaleDateString()}</span>
+                      <span className="text-xs text-slate-400 dark:text-slate-500">{new Date(comment.createdAt).toLocaleDateString()} • {new Date(comment.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
                     
                     {user && user.username === comment.username && (

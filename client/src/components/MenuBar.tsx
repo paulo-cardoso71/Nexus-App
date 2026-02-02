@@ -48,9 +48,12 @@ function MenuBar() {
 
             {user ? (
               <>
-                <span className="hidden sm:block text-sm font-medium text-slate-600 dark:text-slate-300">
+                <Link 
+                  to="/profile" 
+                  className="hidden sm:block text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mr-2"
+                >
                   @{user.username}
-                </span>
+                </Link>
                 <button
                   onClick={logout}
                   className="text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 px-3 py-1 rounded transition-colors"
