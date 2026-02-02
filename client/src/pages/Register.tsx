@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { AuthContext } from '../context/auth';
 
-// 1. The GraphQL Mutation
+// The GraphQL Mutation
 const REGISTER_USER = gql`
   mutation Register(
     $username: String!
@@ -35,7 +35,7 @@ function Register() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState<any>({});
 
-  // 2. Form State
+  // Form State
   const [values, setValues] = useState({
     username: '',
     email: '',
@@ -43,12 +43,12 @@ function Register() {
     confirmPassword: ''
   });
 
-  // 3. Handle Input Changes
+  // Handle Input Changes
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  // 4. Mutation Hook
+  // Mutation Hook
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
       // SUCCESS: Log the user in via Context and redirect
@@ -56,12 +56,17 @@ function Register() {
       navigate('/');
     },
     onError(err) {
-      // ERROR: Capture GraphQL validation errors
-      // Note: This depends on how your backend formats errors. 
-      // Usually accessing err.graphQLErrors[0].extensions.errors
-      console.log(err); 
-      setErrors(err && err.graphQLErrors[0] ? err.graphQLErrors[0].extensions?.errors : {});
+      const validationErrors = err.graphQLErrors[0]?.extensions?.errors;
+      
+      if (validationErrors) {
+        setErrors(validationErrors);
+      } else {
+       
+        const errorMessage = err.graphQLErrors[0]?.message || err.message;
+        setErrors({ main: errorMessage });
+      }
     },
+    // ----------------------------------------
     variables: values
   });
 
