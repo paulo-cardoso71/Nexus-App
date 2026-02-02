@@ -1,9 +1,15 @@
-// server/src/graphql/resolvers/users.ts
-
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { User } from '../../models/index.js';
-import { validateRegisterInput, validateLoginInput } from '../../util/validators.js'; // Importe o validateLoginInput
+import { validateRegisterInput, validateLoginInput } from '../../util/validators.js';
+import { Post } from '../../models/index.js';
+import { checkAuth } from '../../util/check-auth.js';
+
+interface UserPayload {
+  id: string;
+  username: string;
+  email: string;
+}
 
 const generateToken = (user: any) => {
   return jwt.sign(
@@ -19,7 +25,7 @@ const generateToken = (user: any) => {
 
 export const usersResolvers = {
   Mutation: {
-    // --- REGISTER (JÁ ESTAVA AQUI) ---
+    // --- REGISTER ---
     async register(
       _: any,
       { username, email, password, confirmPassword }: any
@@ -34,9 +40,17 @@ export const usersResolvers = {
         throw new Error(JSON.stringify(errors));
       }
 
+      // Check Username
       const user = await User.findOne({ username });
       if (user) {
         throw new Error('Username is taken');
+      }
+
+      // Check Email
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+        // Isso vai cair no 'main' error do Frontend e aparecer na caixa vermelha
+        throw new Error('Email is already taken');
       }
 
       const passwordHash = await bcrypt.hash(password, 12);
@@ -58,28 +72,23 @@ export const usersResolvers = {
       };
     },
 
-    // --- LOGIN (NOVIDADE AQUI 👇) ---
+    // --- LOGIN ---
     async login(_: any, { username, password }: any) {
-      // 1. Validar se digitou algo
       const { errors, valid } = validateLoginInput(username, password);
       if (!valid) {
         throw new Error(JSON.stringify(errors));
       }
 
-      // 2. Buscar usuário no banco
       const user = await User.findOne({ username });
       if (!user) {
-        // Cuidado: Em apps reais, as vezes dizemos "Credenciais Inválidas" para não dar dica a hackers
         throw new Error('User not found'); 
       }
 
-      // 3. Checar a senha (Bcrypt compara a senha digitada com a hash do banco)
       const match = await bcrypt.compare(password, user.password as string);
       if (!match) {
         throw new Error('Wrong credentials');
       }
 
-      // 4. Gerar o token (O Crachá)
       const token = generateToken(user);
 
       return {
@@ -87,6 +96,22 @@ export const usersResolvers = {
         id: user._id,
         token,
       };
+    },
+
+    // --- DELETE USER ---
+    async deleteUser(_: any, __: any, context: any) {
+      // 2. Aqui a mágica: dizemos ao TS que o retorno é do tipo UserPayload
+      const user = checkAuth(context) as UserPayload;
+
+      try {
+        // Agora o erro sumiu porque ele sabe que 'user' tem 'username' e 'id'
+        await Post.deleteMany({ username: user.username });
+        await User.findByIdAndDelete(user.id);
+
+        return 'User and posts deleted successfully';
+      } catch (err) {
+        throw new Error('Error deleting user');
+      }
     }
   },
 };
