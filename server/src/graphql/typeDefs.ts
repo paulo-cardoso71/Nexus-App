@@ -48,5 +48,6 @@ export const typeDefs = `#graphql
     
     register(username: String!, email: String!, password: String!, confirmPassword: String!): User!
     login(username: String!, password: String!): User!
+    deleteUser: String!
   }
 `; // <--- A CRASE DEVE FICAR AQUI NO FINAL
