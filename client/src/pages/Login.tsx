@@ -73,7 +73,7 @@ function Login() {
               type="text"
               name="username"
               placeholder="Username"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               value={values.username}
               onChange={onChange}
             />
@@ -86,7 +86,7 @@ function Login() {
               type="password"
               name="password"
               placeholder="********"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               value={values.password}
               onChange={onChange}
             />

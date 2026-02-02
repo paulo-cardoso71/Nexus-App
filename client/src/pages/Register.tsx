@@ -85,7 +85,7 @@ function Register() {
               type="text"
               name="username"
               placeholder="Your username"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               value={values.username}
               onChange={onChange}
             />
@@ -98,7 +98,7 @@ function Register() {
               type="email"
               name="email"
               placeholder="your@email.com"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               value={values.email}
               onChange={onChange}
             />
@@ -111,7 +111,7 @@ function Register() {
               type="password"
               name="password"
               placeholder="********"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               value={values.password}
               onChange={onChange}
             />
@@ -124,7 +124,7 @@ function Register() {
               type="password"
               name="confirmPassword"
               placeholder="********"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               value={values.confirmPassword}
               onChange={onChange}
             />
