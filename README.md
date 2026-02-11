@@ -74,12 +74,14 @@ This project leverages the robust ecosystem of modern JavaScript:
    git clone [https://github.com/paulo-cardoso71/Nexus-App.git](https://github.com/paulo-cardoso71/Nexus-App.git)
    ```
 2. **Setup Backend:**
+```bash
     cd server
     npm install
     # Create a .env file with:
     # MONGODB_URI=your_mongodb_string
     # SECRET_KEY=your_secret_key
     npm run dev
+```
 
 3. **Setup Frontend:**
 ```bash
