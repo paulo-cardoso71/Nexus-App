@@ -70,34 +70,34 @@ This project leverages the robust ecosystem of modern JavaScript:
 ## 🔧 How to Run Locally
 
 1. **Clone the repository:**
-```bash
-   git clone [https://github.com/paulo-cardoso71/Nexus-App.git](https://github.com/paulo-cardoso71/Nexus-App.git)
-```
+    ```bash
+    git clone [https://github.com/paulo-cardoso71/Nexus-App.git](https://github.com/paulo-cardoso71/Nexus-App.git)
+    ```
+
 2. **Setup Backend:**
-```bash
+    ```bash
     cd server
     npm install
     # Create a .env file with:
     # MONGODB_URI=your_mongodb_string
     # SECRET_KEY=your_secret_key
     npm run dev
-```
+    ```
 
 3. **Setup Frontend:**
-```bash
+    ```bash
     cd client
-   npm install
-   # The app will connect to localhost:4000 by default.
-   # If you need to change the API URL, create a .env file:
-   # VITE_API_URL=http://your-custom-url/graphql
-   npm run dev
-```
+    npm install
+    # The app will connect to localhost:4000 by default.
+    # If you need to change the API URL, create a .env file:
+    # VITE_API_URL=http://your-custom-url/graphql
+    npm run dev
+    ```
 
-4. **Acess:**
-```
-Open http://localhost:5173 to view the app.
-
-```
+4. **Access:**
+    ```
+    Open http://localhost:5173 to view the app.
+    ```
 
 ### 🧠 Deployment
 
