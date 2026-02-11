@@ -70,9 +70,9 @@ This project leverages the robust ecosystem of modern JavaScript:
 ## 🔧 How to Run Locally
 
 1. **Clone the repository:**
-   ```bash
+```bash
    git clone [https://github.com/paulo-cardoso71/Nexus-App.git](https://github.com/paulo-cardoso71/Nexus-App.git)
-   ```
+```
 2. **Setup Backend:**
 ```bash
     cd server
