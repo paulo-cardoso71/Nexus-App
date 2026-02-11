@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer className="mt-auto py-8 text-center text-gray-400 text-sm">
       <p>
-        Built with <span className="text-red-400">❤</span> using{' '}
+        Built<span className="text-red-400"></span> using{' '}
         <strong className="text-gray-600">React</strong>,{' '}
         <strong className="text-gray-600">GraphQL</strong> &{' '}
         <strong className="text-gray-600">MongoDB</strong>.
