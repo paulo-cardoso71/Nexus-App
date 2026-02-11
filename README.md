@@ -99,7 +99,7 @@ This project leverages the robust ecosystem of modern JavaScript:
     Open http://localhost:5173 to view the app.
     ```
 
-### 🧠 Deployment
+## 🧠 Deployment
 
 This project follows a distributed deployment strategy:
 
@@ -110,6 +110,6 @@ Backend: Hosted on Render, serving the GraphQL API endpoint.
 Database: Managed cluster on MongoDB Atlas.
 
 
-### 👨‍💻 Author
+## 👨‍💻 Author
 
-Paulo Eder Medeiros Cardoso
+Paulo Eder Medeiros Cardoso. Software Engineer focused on building scalable, high-performance web applications.
